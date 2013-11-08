@@ -1,0 +1,13 @@
+{* Smarty *}
+{include file="examhead.tpl"}     
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+简答题
+<form action='shortAnswerQuestions.php' method=POST>
+	
+        {foreach $simplelist as $item}
+	<li><tr><td>习题号：</td><td>{$item[0]}</td><br><td>{$item[1]}</td><td>{$item[2]}</td><td>{$item[3]}</td></tr><br>
+        <td>答案</td>
+	<td><input type=text name="{$item[0]}_{$userid}_{$hno}"></td>
+	</tr></li>
+{/foreach}
+        <input type=submit name='submit' value='提交'><br/></form>

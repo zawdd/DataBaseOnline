@@ -1,0 +1,129 @@
+<?php 
+	include "connect_MySQL.php";
+	require_once('/usr/local/lib/Smarty-3.1.14/libs/Smarty.class.php');
+	
+	$smarty = new Smarty();
+	$smarty->setTemplateDir('/var/www/templates/');
+	$smarty->setCompileDir('/var/www/templates_c/');
+	$smarty->setConfigDir('/var/www/configs/');
+	$smarty->setCacheDir('/var/www/cache/');
+	
+
+	
+	if($_POST['pid'] AND $_POST['chaptername'] AND $_POST['knowledgename'] AND $_POST['econtent'] AND $_POST['answer'] AND $_POST['score'] AND $_POST['stage'])
+	{		
+		$pid = $_POST['pid'];
+		$chaptername = $_POST['chaptername'];
+		$knowledgename = $_POST['knowledgename'];
+		$econtent = nl2br(htmlentities($_POST['econtent']));//把特殊符号都变成html符号，处理换行符号
+		$answer = $_POST['answer'];
+		$score = $_POST['score'];
+		$stage = $_POST['stage'];
+		
+		$cuquery = "select updateCommonProblem($pid, '$chaptername', '$knowledgename', '$econtent', '$answer', $score, '$stage')";
+		$cusql = mysqli_query($link, $cuquery);
+		$curesult = mysqli_fetch_array($cusql, MYSQLI_NUM);
+		$err = mysqli_error($link); 
+		//printf($curesult);
+		//printf($err);
+		if($err){
+			echo "error in update";
+		}
+		if($curesult[0] == "1"){
+			echo "<meta http-equiv=\"refresh\" content=\"1;url=showAllProblem.php\">";
+		}
+		if($curesult[0] == "0"){
+			echo "error,this problem has been answered so you cant change it!";
+			
+			//echo "<meta http-equiv=\"refresh\" content=\"1;url=addChapter.php\">";
+		}
+		
+	}
+	
+	if($_POST['pid'] AND $_POST['chaptername'] AND $_POST['knowledgename'] AND $_POST['econtent'] AND $_POST['answer'] AND $_POST['score'] AND $_POST['stage'])
+	{		
+		$pid = $_POST['pid'];
+		$chaptername = $_POST['chaptername'];
+		$knowledgename = $_POST['knowledgename'];
+		$econtent = nl2br(htmlentities($_POST['econtent']));//把特殊符号都变成html符号，处理换行符号
+		$answer = $_POST['answer'];
+		//$intxt = $_POST['intxt'];
+		//$outtxt = $_POST['outtxt'];
+		$score = $_POST['score'];
+		$stage = $_POST['stage'];
+		
+		$ququery = "select updateProgramProblem($pid, '$chaptername', '$knowledgename', '$econtent', '$answer', $score, '$stage')";
+		$qusql = mysqli_query($link, $ququery);
+		$quresult = mysqli_fetch_array($qusql, MYSQLI_NUM);
+		$err = mysqli_error($link); 
+		//printf($curesult);
+		//printf($err);
+		if($err){
+			echo "error in update";
+		}
+		if($quresult[0] == "1"){
+			echo "<meta http-equiv=\"refresh\" content=\"1;url=showAllProblem.php\">";
+		}
+		if($quresult[0] == "0"){
+			echo "error,this problem has been answered so you cant change it!";
+			
+			//echo "<meta http-equiv=\"refresh\" content=\"1;url=addChapter.php\">";
+		}
+		
+	}
+	
+	if($_POST['upc'] AND $_POST['upid'])
+	{
+		$upc = $_POST['upc'];
+		$upid = $_POST['upid'];
+		
+		$selectchapterquery = "SELECT * FROM Chapter";	
+		$selectchaptersql = mysqli_query($link, $selectchapterquery);
+		$chapterlist = array();
+
+		while($row = mysqli_fetch_array($selectchaptersql, MYSQLI_NUM)){
+			$chapterlist[] = $row;
+		}
+		
+		$selectknowledgequery = "SELECT * FROM Knowledge";	
+		$selectknowledgesql = mysqli_query($link, $selectknowledgequery);
+		$knowledgelist = array();
+
+		while($row = mysqli_fetch_array($selectknowledgesql, MYSQLI_NUM)){
+			$knowledgelist[] = $row;
+		}
+		$smarty->assign('chapterlist', $chapterlist);
+		$smarty->assign('knowledgelist', $knowledgelist);
+		
+		if($_POST['upc']=="Cexercise"){
+			$csquery = "call showOneProblem('$upc', $upid)"; //cs mean common problem select
+			$cssql = mysqli_query($link, $csquery);
+			$csrow = mysqli_fetch_array($cssql, MYSQLI_NUM);
+			$err = mysqli_error($link); 
+			if ($err)
+				echo "<meta http-equiv=\"refresh\" content=\"1;url=showAllProblem.php\">"; 			
+				
+			$smarty->assign('csrow',$csrow);
+			$smarty->display('updateNormalProblem.tpl');
+			
+		}
+		if($_POST['upc']=="Pexercise"){
+			$psquery = "call showOneProblem('$upc', $upid)"; //cs mean common problem select
+			$pssql = mysqli_query($link, $psquery);
+			$psrow = mysqli_fetch_array($pssql, MYSQLI_NUM);
+			$err = mysqli_error($link); 
+			if ($err)
+				echo "<meta http-equiv=\"refresh\" content=\"1;url=showAllProblem.php\">"; 			
+				
+			$smarty->assign('psrow',$psrow);
+			$smarty->display('updateProgramProblem.tpl');
+			//show this problem
+		}
+		
+	}/*else{
+		$smarty->display('error.tpl');
+	}*/
+	
+	//$smarty->display('error.tpl');
+
+?>

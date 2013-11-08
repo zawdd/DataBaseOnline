@@ -1,0 +1,2 @@
+hello.c: In function ‘main’:
+hello.c:8:5: error: expected ‘,’ or ‘;’ before ‘scanf’

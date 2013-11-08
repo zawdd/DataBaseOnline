@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>在线答题系统</title>
+		
+		<script src="./files/jquery-1.7.1.min.js" type="text/javascript"></script><style type="text/css"></style>
+		
+		<script>
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); 
+			var r = window.location.search.substr(1).match(reg);  
+			if (r!=null) {
+				return unescape(r[2]); 
+			}
+			
+			return null; 
+		}
+		
+		$(document).ready(function() {
+			var msg = getUrlParam("msg");
+			if(msg != null) {
+				if(msg == "errpass") {
+					$("#msg").text("用户名密码错误！");
+				}
+			}
+			/*
+			$("#loginbutton").click(function() {
+				var username = $.trim( $("#username").val() );
+				var password = $.trim( $("#password").val() );
+				if( (username == "") || (password == "") ) {
+					alert("请输入用户名密码");
+					return;
+				}
+				
+				$("#lf").submit();
+			});
+			*/
+			
+			$( "form" ).submit(function() {
+				var username = $.trim( $("#username").val() );
+				var password = $.trim( $("#password").val() );
+				if( (username == "") || (password == "") ) {
+					alert("请输入用户名密码");
+					return false;
+				}
+				
+				return true;
+			});
+		});
+		
+		
+		</script>
+		
+		<style>
+			body{
+				background:#3580FF url("images/xs-bkg2.jpg") no-repeat;
+				font:1.03em 微软雅黑,Arial,Helvetica,sans-serif;
+				color:white;
+				position: absolute;
+				height: 99%;
+				min-width: 100%;
+				margin:0;
+				padding:0px;
+			}
+			#wrap{
+				position:relative;
+				min-height:99%;
+
+			}
+			#header{
+				height:100px;
+				width:100%;
+			}
+			#middle{
+				width:100%;
+			}
+			#mld{
+				margin-top:0px;/*1.margin-top of login area */
+				/*border-top:2px solid white;*/
+				padding-top:30px;
+				padding-right:140px;
+				padding-bottom:100px;
+		
+			}
+			div#h1-con{
+	
+			}
+			
+			#t-line{
+				border-bottom:2px solid white;
+				text-align:right;
+				width:500px;
+			}
+
+			#login-l{
+				width:271px;
+				padding:20px;
+				margin-top:30px;
+				border:2px solid white;
+				float:right;
+				
+			}
+			#login-b-l{
+				/*float:right;*/
+				background-color:#FFAF20;
+				border-top:2px solid white;
+				border-right:2px solid #4E78BF;
+				border-left:2px solid white;
+				border-bottom:2px solid #4E78BF;
+			}
+			#login-b-l:active{
+				border-top:2px solid #4E78BF;
+				border-right:2px solid white;
+				border-left:2px solid #4E78BF;
+				border-bottom:2px solid white;				
+			}
+			
+			.ui-state-default{
+				border:1px solid white;
+				width:200px;
+				height:18px;
+				line-height:14px;
+				/*text-align:center;*/
+			
+			}
+			table.fill tr{
+				height:40px;
+			}
+			#loginbutton{
+				background:none repeat scroll 0 0 transparent;
+				width:100%;
+				overflow:hidden;
+				border:0 none;
+				color:white;
+				height:35px;
+				line-height:35px;
+				font:1.03em 微软雅黑,Arial,Helvetica,sans-serif;
+			}
+
+			.floatright{
+				float:right;
+			}
+
+
+			#footer{
+				/*clear:both;*/
+				width:100%;
+				display:block;
+				min-width:900px;
+				position:absolute;
+				bottom:10px;
+				overflow:hidden;
+			}
+			#foot{
+				width:100%;
+				margin:auto;
+				background: url(http://www.sysu.edu.cn/2011/images/foot_bg.gif) bottom repeat-x;
+				height:45px;
+			}
+			#footL,#footM,#footR {
+				float:left;
+				color:#999999;
+				margin-top:7px;
+				font-size:10px;
+			}
+			#foot-con{
+				width:960px;
+				margin:auto;
+			}
+			#footL {
+			width:200px;
+			margin-left:40px;
+			}
+			#footM {
+			width:300px;
+			}
+			#footR {
+			width:350px;
+			}
+			#footB {
+				color:#999999;
+				width:450px;
+				margin:auto;
+				clear:both;
+				font-size:10px;
+				display:none;
+			}
+			#footB span {
+				padding-left:60px;
+			}
+			#footB a {
+				color:#999999;
+				font-size:10px;
+			}
+		</style>
+	</head>
+
+
+	<body>
+		<!--
+		<div id="proxyFail" title="错误提示">
+			<p>获取单点登录信息失败, 请稍后再试。</p>
+		</div>
+		-->
+		<div id="wrap">
+			<div id="maincontainer">
+				<div id="header"></div>
+				
+				<div id="middle">
+					<div id="mld">
+
+						<div id="h1-con" class="floatright"><h1>在线答题系统</h1></div>
+						<div style="clear:both;"></div>
+						
+						<div id="t-line" class="floatright"></div>
+						<div style="clear:both;"></div>
+						
+						<div id="login-l">
+							<div id="msg" style="color:red"></div>
+							<form id="lf" method="post" action="################">
+								<table class="fill">
+									<tbody><tr>
+										<td>用户名:</td>
+										<td><span class="ipt"><input id="username" name="username" value="" type="text" class="ui-state-default"></span></td>
+									</tr>
+									
+									<tr>
+										<td>密&nbsp;&nbsp;&nbsp;码:</td>
+										<td><span class="ipt"><input id="password" name="password" value="" type="password" class="ui-state-default"></span></td>
+									</tr>
+								</tbody></table>
+
+								<div id="login-b-l"><span class="btn"><input type="submit" id="loginbutton" value="登录"></span></div>
+								<div style="clear:both;"></div>
+								<a href="#####################" target="_bank">注册</a>
+								<input type="hidden" id="lt" name="lt">
+								<input type="hidden" id="_eventId" name="_eventId" value="submit">
+
+							</form>
+						</div>
+						<div style="clear:both;"></div>
+					</div>
+				<iframe id="tmp_downloadhelper_iframe" style="display: none;"></iframe></div><!--middle end-->
+			</div>
+
+			<div id="footer">
+				<div id="foot">	
+					<div id="foot-con">
+						<div id="footL">
+							<a href="http://www.sysu.edu.cn"><img src="./files/slogo.gif" border="0" height="26" width="88"></a>
+						</div>
+						<div id="footM">
+							通讯地址:广州市新港西路135号 邮编:510275 <br> E-mail: zawdd@163.com
+						</div>
+						<div id="footR">
+							Address: Sun Yat-sen University, Guangzhou, China, 510275 <br>
+						</div>
+						<div id="footB">
+							<span>中山大学 版权所有 &nbsp;&nbsp;<a href="http://www.sysu.edu.cn">联系我们</a>-粤ICP备05008892号</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+
+
+<style>.myToolbar {z-index:100000} .myToolbar .tb_btn {cursor:pointer;border:1px solid #555;padding:3px}   .tb_highlight{background-color:yellow} .tb_hide {visibility:hidden}</style><style>.tb_button {padding:2px;cursor:pointer;border-right: 1px solid #8b8b8b;border-left: 1px solid #FFF;border-bottom: 1px solid #fff;}.tb_button.hover {borer:2px outset #def; background-color: #f8f8f8 !important;}</style><div id="GOOGLE_INPUT_CHEXT_FLAG" style="display: none;" input="" input_stat="{}"></div></body></html>

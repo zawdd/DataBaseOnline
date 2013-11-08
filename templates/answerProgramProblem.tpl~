@@ -1,0 +1,11 @@
+ {* Smarty *}
+<html>
+{include file="adminhead.tpl"}
+
+{$psrow[2]}<tr>{$psrow[6]}<tr>{$psrow[7]}
+
+<form action='answerProgramProblem.php' method=POST>
+<textarea type=text name='answer' rows="10" cols="50"></textarea>
+
+<input type=submit name='submit' value='提交'><br/></form>
+ 

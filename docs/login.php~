@@ -1,0 +1,41 @@
+<?php 
+	include "connect_MySQL.php";
+	require_once('/usr/local/lib/Smarty-3.1.14/libs/Smarty.class.php');
+	/*
+	$smarty = new Smarty();
+	$smarty->setTemplateDir('/var/www/templates/');
+	$smarty->setCompileDir('/var/www/templates_c/');
+	$smarty->setConfigDir('/var/www/configs/');
+	$smarty->setCacheDir('/var/www/cache/');
+	*/
+	/*$selectquery = "SELECT * FROM User";	
+	$selectsql = mysqli_query($link, $selectquery);
+	$userlist = array();
+        while($row = mysqli_fetch_array($selectsql, MYSQLI_NUM)){
+		$userlist[] = $row;
+
+	    }
+         $smarty->assign('userlist', $userlist);*/
+      
+         
+         if($_POST['UID'] AND $_POST['Upassword'])
+         {
+           $uid=$_POST['UID'];
+           $selectquery = "SELECT Upassword FROM User 
+where UID=$uid";	
+	   $selectsql = mysqli_query($link, $selectquery);
+           $row = mysqli_fetch_array($selectsql, MYSQLI_NUM);
+           //echo strcmp($_POST['Upassword'],$row[0]);
+           if(strcmp($_POST['Upassword'],$row[0])){
+               echo "密码错误！";
+           }else{
+	       echo "<meta http-equiv=\"refresh\" content=\"1;url= .\docs\studentInfo.php\">";
+           }
+         }
+         // $smarty->display('login.tpl');
+?>
+                  
+
+
+
+

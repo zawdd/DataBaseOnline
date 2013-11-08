@@ -1,0 +1,36 @@
+{* Smarty *}
+{include file="teacherHead.tpl"}
+
+ExamAnswerForStudent
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+
+<ul>
+<li>
+<th>题号</th>
+<th>内容</th>
+<th>标准答案</th>
+<th>分值</th>
+<th>作答答案</th>
+<th>得分</th>
+</li>
+</ul>
+
+
+
+
+
+
+</ul>
+
+<ul>
+{foreach $examlist as $item}
+        <li>
+        {foreach $item as $key=>$value}
+                <th>{$value}</th>
+        {/foreach}
+        </li>
+{/foreach}
+</ul>
+

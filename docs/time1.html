@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title></title>
+<script language="javascript" type="text/javascript">
+//字符串格式化
+String.format = function()
+{
+    var s = arguments[0];
+    for(var i=1;i<arguments.length;i++)
+    {
+        var re = new RegExp("\{[" + (i-1) + "]{1}\}","g");
+        s = s.replace(re,arguments[i]);
+    }
+    return s;
+}
+ 
+var tm = new Date(); //当前时间至2009年1月12日，23点，59分，0秒 倒计时 。
+tm.getHours()+2; 
+function timer()
+{
+    var dt = new Date();
+    document.getElementById("sp1").innerHTML = String.format("{0}小时 {1}分 {2}秒",
+    (-dt.getDate()+tm.getDate())*24 - dt.getHours()+tm.getHours(),
+    tm.getMinutes()-dt.getMinutes()-1,
+    tm.getSeconds()-dt.getSeconds()+60
+    );
+}
+function SC()
+{
+    var scTop = (document.documentElement.scrollTop || document.documentElement.scrollTop) + 20 + "px";
+    document.getElementById("div1").style.top = scTop ;
+}
+setInterval(timer,1000);
+</script>
+</head>
+<body onscroll="SC()">
+<div  id="div1" style=" top:20px; right:0px; position:absolute; width:300px; height:80px; line-height:40px; background-color:#CCCCCC; border: solid 1px  #999999;  float:right;">
+    距离考试结束<br/>还有：<span id="sp1"></span>
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+</body>
+</html>

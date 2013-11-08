@@ -1,0 +1,19 @@
+<?php
+
+require_once('/usr/local/lib/Smarty-3.1.14/libs/Smarty.class.php');
+
+$smarty = new Smarty();
+
+$smarty->setTemplateDir('/var/www/templates/');
+$smarty->setCompileDir('/var/www/templates_c/');
+$smarty->setConfigDir('/var/www/configs/');
+$smarty->setCacheDir('/var/www/cache/');
+
+$smarty->assign('name','Ned');
+
+//** un-comment the following line to show the debug console
+//$smarty->debugging = true;
+
+$smarty->display('test.tpl');
+
+?> 

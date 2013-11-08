@@ -1,0 +1,8 @@
+{*Smarty*}
+<center><h3>Welecome {$user} !</h3></center><br>
+<center><a href="\showAllProblem.php">ShowAllProblem</a>          
+<a href="\addNormalProblem.php">addNormalProblem</a>         
+<a href="\addProgramProblem.php">addProgramProblem</a>         
+<a href="\addChapter.php">addChapter</a>        
+<a href="\addKnowledge.php">addKnowledge</a></center><br>           
+<hr>

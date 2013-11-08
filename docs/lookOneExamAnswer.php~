@@ -1,0 +1,34 @@
+<?php 
+	include "connect_MySQL.php";
+	require_once('/usr/local/lib/Smarty-3.1.14/libs/Smarty.class.php');
+	session_start();
+	$smarty = new Smarty();
+	$smarty->setTemplateDir('/var/www/templates/');
+	$smarty->setCompileDir('/var/www/templates_c/');
+	$smarty->setConfigDir('/var/www/configs/');
+	$smarty->setCacheDir('/var/www/cache/');
+	if($_GET['$examid'])
+		$examid=$_GET['$examid'];
+		
+	$uid=$_SESSION['uid'];
+	
+	$selectquery = "SELECT CexerciseAnswerForstudent.Cnum, ChooseProblem.CPcontent, ChooseProblem.CPanswer, CexerciseAnswerForstudent.Canswer, CexerciseAnswerForstudent.Cscore  FROM CexerciseAnswerForstudent, ChooseProblem WHERE CexerciseAnswerForstudent.Sno=$uid AND CexerciseAnswerForstudent.Chno=$examid AND CexerciseAnswerForstudent.Ceno=ChooseProblem.CPid ORDER BY Cnum";
+	$selectsql = mysqli_query($link, $selectquery);
+	while($row = mysqli_fetch_array($selectsql, MYSQLI_NUM))
+    {
+		$problemlist[] = $row;
+	}
+
+	$selectquery2 = "SELECT CexerciseAnswerForstudent.Cnum, FillProblem.FPcontent, FillProblem.FPanswer, CexerciseAnswerForstudent.Canswer, CexerciseAnswerForstudent.Cscore  FROM CexerciseAnswerForstudent, FillProblem WHERE CexerciseAnswerForstudent.Sno=$uid AND CexerciseAnswerForstudent.Chno=$examid AND CexerciseAnswerForstudent.Ceno=FillProblem.CPid ORDER BY Cnum";
+	$selectsql2 = mysqli_query($link, $selectquery2);
+	while($row2 = mysqli_fetch_array($selectsql2, MYSQLI_NUM))
+    {
+		$problemlist[] = $row2;
+	}
+
+       $smarty->assign('problemlist', $problemlist);
+
+
+       $smarty->display('lookOneExamAnswer.tpl');
+
+?>

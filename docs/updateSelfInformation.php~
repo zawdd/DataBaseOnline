@@ -1,0 +1,62 @@
+<?php 
+	include "connect_MySQL.php";
+	require_once('/usr/local/lib/Smarty-3.1.14/libs/Smarty.class.php');
+	session_start();
+	$smarty = new Smarty();
+	$smarty->setTemplateDir('/var/www/templates/');
+	$smarty->setCompileDir('/var/www/templates_c/');
+	$smarty->setConfigDir('/var/www/configs/');
+	$smarty->setCacheDir('/var/www/cache/');
+        $uid=$_SESSION['uid'];
+        if ($_POST['Uname'])
+             {
+                $updatequery="UPDATE User SET Uname='$_POST[Uname]' WHERE UID=$uid ";	
+	        $updatesql = mysqli_query($link, $updatequery);
+              }
+        if ($_POST['Usex'])
+            
+           {
+                $updatequery="UPDATE User SET Usex='$_POST[Usex]'  WHERE UID=$uid ";
+	        $updatesql = mysqli_query($link, $updatequery);
+           }
+
+        if ($_POST['Uage'])
+             {
+                $updatequery="UPDATE User SET Uage=$_POST[Uage] WHERE UID=$uid ";	
+	        $updatesql = mysqli_query($link, $updatequery);
+              }
+   
+         if ($_POST['Unation'])
+             {
+                $updatequery="UPDATE User SET Unation='$_POST[Unation]' WHERE UID=$uid ";	
+	        $updatesql = mysqli_query($link, $updatequery);
+              }
+         
+         if ($_POST['UBP'])
+             {
+                $updatequery="UPDATE User SET UBP='$_POST[UBP]' WHERE UID=$uid ";	
+	        $updatesql = mysqli_query($link, $updatequery);
+              }
+        
+         
+
+
+       if (strcmp($_POST['Upassword1'],$_POST['Upassword2']) AND $_POST['Upassword1'] AND $_POST['Upassword2'] )
+             
+             echo "密码不一致！";      
+
+              else    {             
+                $updatequery="UPDATE User SET Upassword='$_POST[Upassword1]' WHERE UID=$uid ";	
+	        $updatesql = mysqli_query($link, $updatequery);
+              }
+		
+	 if ($_POST['Uschool'])
+             {
+                $updatequery="UPDATE User SET Uschool='$_POST[Uschool]' WHERE UID=$uid ";	
+	        $updatesql = mysqli_query($link, $updatequery);
+              }	
+	
+       $smarty->display('updateSelfInformation.tpl');
+			
+		
+?>

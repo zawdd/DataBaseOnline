@@ -1,0 +1,7 @@
+<?php
+	include "connect_MySQL.php";
+	session_start();
+	unset($_SESSION['uid']);
+	session_destory();
+	echo "<meta http-equiv=\"refresh\" content=\"1;url= http://localhost/index.htm\">";
+?>

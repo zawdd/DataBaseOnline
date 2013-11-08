@@ -1,0 +1,28 @@
+{* Smarty *}
+<html>
+{include file="studenthead.tpl"}   
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="container">
+<center>
+<form action='selectFinalExam.php' method=POST>
+<table class="table table-bordered table-striped" border="1">
+	{$b=1}
+	<tr><td>序号</td><td>考试名称</td><td>截止日期</td><td>操作</td></tr>
+        {foreach $examlist as $item}
+	<tr>
+	<td>{$b++}</td>
+	<td>{$item[1]}</td>
+	<td>{$item[2]}</td>
+        {assign var=i value=$item[0]}
+        {$examid=0}
+    <td><a href="/docs/chooseProblem.php?$examid={$i}">开始</a></td>
+	</tr>
+        {/foreach}
+</table>
+</form>
+</center>
+<hr>
+<p style="color:red">请在截止日期之前进行答题。</p>
+<p style="color:red">考试题目只能回答一次，请谨慎作答。</p>
+</div>
+</html>

@@ -1,0 +1,231 @@
+<?php 
+	include "connect_MySQL.php";
+	require 'smarty/libs/Smarty.class.php';
+	$smarty = new Smarty;
+	session_start();
+	$smarty->template_dir = "smarty/templates/templates";
+	$smarty->compile_dir = "smarty/templates/templates_c";
+	$smarty->config_dir = "smarty/templates/config";
+	$smarty->cache_dir = "smarty/templates/cache";
+
+        $selectchapterquery = "SELECT * FROM Chapter";
+        $selectchaptersql = mysqli_query($link, $selectchapterquery);
+        $chapterlist = array();
+
+        while($row = mysqli_fetch_array($selectchaptersql, MYSQLI_NUM)){
+                $chapterlist[] = $row;
+        }
+
+        $selectknowledgequery = "SELECT * FROM Knowledge";
+        $selectknowledgesql = mysqli_query($link, $selectknowledgequery);
+        $knowledgelist = array();
+
+        while($row = mysqli_fetch_array($selectknowledgesql, MYSQLI_NUM)){
+                $knowledgelist[] = $row;
+        }
+        $smarty->assign('chapterlist', $chapterlist);
+        $smarty->assign('knowledgelist', $knowledgelist);
+	
+	$selectquery = "SELECT * FROM Exam";	
+	$selectsql = mysqli_query($link, $selectquery);
+	$examlist = array();
+	//mysqli_fetch_all($selectsql, MYSQLI_NUM);
+	
+	while($row = mysqli_fetch_array($selectsql, MYSQLI_NUM)){
+		$examlist[] = $row;
+
+	}
+	$smarty->assign('examlist', $examlist);
+
+	
+	if ($_POST['cnum'] AND $_POST['name'] AND $_POST['deadline'] AND $_POST['time'] AND $_POST['knum'] AND $_POST['stage'] AND $_POST['numa'] AND $_POST['numb'] AND $_POST['numc'] AND $_POST['numd'])
+	{
+		$cnum = $_POST['cnum'];	//章节号
+		$name = $_POST['name'];	//考试名称
+//		$releasedate = $_POST['releasedate'];	//发布时间
+		$deadline = $_POST['deadline'];	//截止时间
+		$time = $_POST['time'];	//答题时间
+		$knum = $_POST['knum'];	//所属知识点编号
+		$stage = $_POST['stage'];	//难度系数
+		$numa = $_POST['numa'];	//选择题数目
+		$numb = $_POST['numb'];	//填空题数目
+		$numc = $_POST['numc'];	//简答题数目
+		$numd = $_POST['numd'];	//编程题数目
+		
+		// 以下计算各种题型在题库中的数量.
+		$selectquery = "SELECT Count(Ceno) FROM Cexercise WHERE Ccno='$cnum' AND Cename='xuanze' AND Cstage='$stage'";
+		$selectsql = mysqli_query($link,$selectquery);
+		$row = mysqli_fetch_array($selectsql);
+		$xuanze_num = $row[0];
+//		echo "cna't use??";
+//		echo "$xuanze_num";
+		
+		$selectquery = "SELECT Count(Ceno) FROM Cexercise WHERE Ccno='$cnum' AND Cename='tiankong' AND Cstage='$stage'";
+                $selectsql = mysqli_query($link,$selectquery);
+                $row = mysqli_fetch_array($selectsql);
+                $tiankong_num = $row[0];
+
+                $selectquery = "SELECT Count(Ceno) FROM Cexercise WHERE Ccno='$cnum' AND Cename='jianda' AND Cstage='$stage'";
+                $selectsql = mysqli_query($link,$selectquery);
+                $row = mysqli_fetch_array($selectsql);
+                $jianda_num = $row[0];
+
+                $selectquery = "SELECT Count(Peno) FROM Pexercise WHERE Pcno='$cnum' AND Pstage='$stage'";
+                $selectsql = mysqli_query($link,$selectquery);
+                $row = mysqli_fetch_array($selectsql);
+                $biancheng_num = $row[0];
+
+		// 以下将各个类型的题目在题库中的题号保存在相应的数组里面
+		$selectxuanzequery = "SELECT Ceno FROM Cexercise WHERE Ccno='$cnum' AND Cename='选择题' AND Cstage='$stage'";
+        	$selectxuanzesql = mysqli_query($link, $selectxuanzequery);
+        	$xuanzelist = array();
+
+        	while($row = mysqli_fetch_array($selectxuanzesql, MYSQLI_NUM)){
+                	$xuanzelist[] = $row[0];
+        	}
+//		echo $xuanzelist[0]." AND ".$xuanzelist[1];
+
+                $selecttiankongquery = "SELECT Ceno FROM Cexercise WHERE Ccno='$cnum' AND Cename='填空题' AND Cstage='$stage'";
+                $selecttiankongsql = mysqli_query($link, $selecttiankongquery);
+                $tiankonglist = array();
+                        
+                while($row = mysqli_fetch_array($selecttiankongsql, MYSQLI_NUM)){
+                        $tiankonglist[] = $row[0];
+                }
+
+                $selectjiandaquery = "SELECT Ceno FROM Cexercise WHERE Ccno='$cnum' AND Cename='问答题' AND Cstage='$stage'";
+                $selectjiandasql = mysqli_query($link, $selectjiandaquery);
+                $jiandalist = array();
+
+                while($row = mysqli_fetch_array($selectjiandasql, MYSQLI_NUM)){
+                        $jiandalist[] = $row[0];
+                }
+
+                $selectbianchengquery = "SELECT Peno FROM Pexercise WHERE Pcno='$cnum' AND Pstage='$stage'";
+                $selectbianchengsql = mysqli_query($link, $selectbianchengquery);
+                $bianchenglist = array();
+
+                while($row = mysqli_fetch_array($selectbianchengsql, MYSQLI_NUM)){
+                        $bianchenglist[] = $row[0];
+                }
+
+
+
+		if ($xuanze_num < $numa OR $tiankong_num < $numb OR $jianda_num < $numc OR $biancheng_num < $numd){
+			echo $xuanze_num.$tiankong_num.$jianda_num.$biancheng_num;
+			die ('There is no enuogh questions!!');
+		}
+		else {
+
+		// 以下在各种题型的题库数量范围内随机生成指定数目的题目.
+		// 在整数1-xuanze_num范围内生成numa个数字
+//	        $xuanze = array();	// 题库数组
+//		$xuanze_list = array();	// 试卷题目数组
+		$xuanze = array(); // 试卷题目数组
+		$xuanze_keys = array();
+//		for ($i=1; $i<=$xuanze_num; $i++){
+//			$xuanze[] = $i;	// 题库数组
+//		}
+//		echo "$xuanze[0],$xuanze[1],$xuanze[2]";
+		$xuanze_keys = array_rand($xuanzelist,$numa);
+		if ($numa == '1') $xuanze[] = $xuanzelist[$xuanze_keys]; else {
+		foreach ($xuanze_keys as $key=>$value)
+			{$xuanze[] = $xuanzelist[$value];}
+		}
+//		$xuanze_keys = array_rand($xuanze,$numa);
+//                if ($numa == '1') $xuanze_list[] = $xuanze[$xuanze_keys]; else {
+//		foreach ($xuanze_keys as $key=>$value)
+//                 	{$xuanze_list[] = $xuanze[$value];}
+//		}
+
+                // 在整数1-tiankong_num范围内生成numb个数字
+//                $tiankong = array();      // 题库数组
+//                $tiankong_list = array(); // 试卷题目数组
+                $tiankong = array(); // 试卷题目数组
+		$tiankong_keys = array();
+//                for ($i=1; $i<=$tiankong_num; $i++){
+//                        $tiankong[] = $i; // 题库数组
+//                }
+//                $tiankong_keys = array_rand($tiankong,$numb);
+//                if ($numb == '1') $tiankong_list[] = $tiankong[$tiankong_keys]; else {
+//                foreach ($tiankong_keys as $key=>$value)
+//                        {$tiankong_list[] = $tiankong[$value];}
+//		}
+                $tiankong_keys = array_rand($tiankonglist,$numb);
+                if ($numb == '1') $tiankong[] = $tiankonglist[$tiankong_keys]; else {
+                foreach ($tiankong_keys as $key=>$value)
+                        {$tiankong[] = $tiankonglist[$value];}
+                }
+
+
+                // 在整数1-jianda_num范围内生成numc个数字
+/*
+                $jianda = array();      // 题库数组
+                $jianda_list = array(); // 试卷题目数组
+		$jianda_keys = array();
+                for ($i=1; $i<=$jianda_num; $i++){
+                        $jianda[] = $i; // 题库数组
+                }
+                $jianda_keys = array_rand($jianda,$numc);
+                if ($numc == '1') $jianda_list[] = $jianda[$jianda_keys]; else {
+                foreach ($jianda_keys as $key=>$value)
+                       {$jianda_list[] = $jianda[$value];}
+		}
+*/
+                $jianda = array(); // 试卷题目数组
+                $jianda_keys = array();
+                $jianda_keys = array_rand($jiandalist,$numc);
+                if ($numc == '1') $jianda[] = $jiandalist[$jianda_keys]; else {
+                foreach ($jianda_keys as $key=>$value)
+                        {$jianda[] = $jiandalist[$value];}
+                }
+                
+
+// 在整数1-biancheng_num范围内生成numd个数字
+/*
+                $biancheng = array();      // 题库数组
+                $biancheng_list = array(); // 试卷题目数组
+		$biancheng_keys = array();
+                for ($i=1; $i<=$biancheng_num; $i++){
+                        $biancheng[] = $i; // 题库数组
+                }
+	//	echo "$biancheng[0]";
+                $biancheng_keys = array_rand($biancheng,$numd);
+//		echo "$biancheng_keys";
+		if ($numd == '1') $biancheng_list[] = $biancheng[$biancheng_keys]; else {
+                foreach ($biancheng_keys as $key=>$value)
+                        {$biancheng_list[] = $biancheng[$value];}
+		}
+*/
+                $biancheng = array(); // 试卷题目数组
+                $biancheng_keys = array();
+                $biancheng_keys = array_rand($bianchenglist,$numd);
+                if ($numd == '1') $biancheng[] = $bianchenglist[$biancheng_keys]; else {
+                foreach ($biancheng_keys as $key=>$value)
+                        {$biancheng[] = $bianchenglist[$value];}
+                }
+
+
+		// 以下将各题目数组转换为'%'间隔的字符串
+		$xuanze_string = implode("%",$xuanze);
+//		echo "$xuanze_string";
+		$tiankong_string = implode("%",$tiankong);
+		$jianda_string = implode("%",$jianda);
+		$biancheng_string = implode("%",$biancheng);
+
+		$today = mktime(0,0,0,date("m"),date("d"),date("Y"));
+		$releasedate = date("Y-m-d", $today);
+//		echo "$releasedate";
+
+		$insertquery = "INSERT INTO Exam VALUES ('','$cnum','$name','$releasedate','$deadline','$time','$knum','$stage','$numa','$xuanze_string','$numb','$tiankong_string','$numc','$jianda_string','$numd','$biancheng_string')";
+		$insertsql = mysqli_query($link, $insertquery);
+	}
+		$err = mysqli_error($link); 
+		if ($err)
+			echo "error$err";
+		else
+			echo "<meta http-equiv=\"refresh\" content=\"1;url=initExam.php\">"; 
+	}
+
+	$smarty->display('initExam.tpl');
+?>
