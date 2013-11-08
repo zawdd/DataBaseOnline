@@ -18,6 +18,7 @@ document.onselectstart=new function("event.returnvalue=false;"); //禁止拖选�
           <li><a href="/docs/chooseProblem.php">单选题</a></li>
           <li><a href="/docs/mchooseProblem.php">多选题</a></li>
           <li><a href="/docs/fillInTheBlank.php">填空题</a></li>
+	  <li><a href="/docs/uploadFile.php">文件上传</a></li>	
           <li><a href="/docs/calculateScore.php">提交</a></li>
           <li><a href="/docs/showSelfInformation.php">放弃</a></li>
         </ul>

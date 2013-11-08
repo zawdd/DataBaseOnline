@@ -1,26 +1,63 @@
 <?php
-if (($_FILES["file"]["type"] == "text/plain") //format control 
-&& ($_FILES["file"]["size"] < 20000))
-{
-	if ($_FILES["file"]["error"] > 0)
-    {
-		echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
-    }else{
-		echo "Upload: " . $_FILES["file"]["name"] . "<br />";
-		echo "Type: " . $_FILES["file"]["type"] . "<br />";
-		echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
-		echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
 
-		if (file_exists("./var/www/upload/" . $_FILES["file"]["name"]))
-		{
-			echo $_FILES["file"]["name"] . " already exists. ";
-		}else{
-			move_uploaded_file($_FILES["file"]["tmp_name"],
-			"./var/www/upload/" . $_FILES["file"]["name"]);
-			echo "Stored in: " . "./var/www/upload/" . $_FILES["file"]["name"];
-		}
-    }
-}else{
-  echo "Invalid file";
-}
+	include "connect_MySQL.php";
+	require_once('/usr/local/lib/Smarty-3.1.14/libs/Smarty.class.php');
+        session_start();
+	
+	function phpalert($msg){
+		$str = '<script type="text/javascript">'; 
+		$str.="alert('".$msg."');";
+		$str.="</script>";
+		echo $str;
+	}	
+	
+        $smarty = new Smarty();
+	$smarty->setTemplateDir('/var/www/templates/');
+	$smarty->setCompileDir('/var/www/templates_c/');
+	$smarty->setConfigDir('/var/www/configs/');
+	$smarty->setCacheDir('/var/www/cache/');
+
+
+	$no=$_SESSION['examid'];
+	$userid=$_SESSION['uid'];
+
+	
+
+	if ($_FILES["infile"]){
+	if (($_FILES["infile"]["size"] < 1024*1024*8) && $_FILES["infile"]["size"] != "")
+	{
+		if ($_FILES["infile"]["error"] > 0)
+	    	{
+			//echo "Return Code: " . $_FILES["infile"]["error"] . "<br />";
+			$errormsg = "上传失败！";
+			phpalert($errormsg);
+	    	}else{
+			//echo "Upload: " . $_FILES["infile"]["name"] . "<br />";
+			//echo "Type: " . $_FILES["infile"]["type"] . "<br />";
+			//echo "Size: " . ($_FILES["infile"]["size"] / 1024) . " Kb<br />";
+			//echo "Temp file: " . $_FILES["infile"]["tmp_name"] . "<br />";
+			$dir="/var/www/upload/".$userid."/";
+			if(!file_exists ($dir)){			
+				mkdir ($dir, 0777);
+			}
+			if (file_exists("/var/www/upload/".$userid."/" . $_FILES["infile"]["name"]))
+			{
+				//echo $_FILES["infile"]["name"] . " already exists. ";
+				$errormsg = $_FILES["infile"]["name"] . " 已经存在！ ";
+				phpalert($errormsg);
+			}else{
+				move_uploaded_file($_FILES["infile"]["tmp_name"],
+				"/var/www/upload/".$userid."/" . $_FILES["infile"]["name"]);
+				//$msg ="Stored in: " . "/var/www/upload/".$userid."/" . $_FILES["infile"]["name"];
+				$msg = $_FILES["infile"]["name"]."上传成功！";
+				phpalert($msg);
+			}
+	    	}
+	}else{
+	  //echo "无效文件";
+		$msg = "上传文件超过大小！";
+		phpalert($msg);
+	}
+	}
+	$smarty->display('uploadFile.tpl');
 ?> 

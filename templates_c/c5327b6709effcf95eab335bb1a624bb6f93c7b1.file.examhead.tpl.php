@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.14, created on 2013-10-09 12:49:36
+<?php /* Smarty version Smarty-3.1.14, created on 2013-11-08 19:07:36
          compiled from "/var/www/templates/examhead.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:418045820520f358d870234-88406352%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'c5327b6709effcf95eab335bb1a624bb6f93c7b1' => 
     array (
       0 => '/var/www/templates/examhead.tpl',
-      1 => 1381294109,
+      1 => 1383908311,
       2 => 'file',
     ),
   ),
@@ -39,6 +39,7 @@ document.onselectstart=new function("event.returnvalue=false;"); //禁止拖选�
           <li><a href="/docs/chooseProblem.php">单选题</a></li>
           <li><a href="/docs/mchooseProblem.php">多选题</a></li>
           <li><a href="/docs/fillInTheBlank.php">填空题</a></li>
+	  <li><a href="/docs/uploadFile.php">文件上传</a></li>	
           <li><a href="/docs/calculateScore.php">提交</a></li>
           <li><a href="/docs/showSelfInformation.php">放弃</a></li>
         </ul>
