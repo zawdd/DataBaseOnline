@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.14, created on 2013-09-16 16:59:48
+<?php /* Smarty version Smarty-3.1.14, created on 2013-11-18 08:54:00
          compiled from "/var/www/templates/studentRegister.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1435281566520f0a3a7af8b4-97989374%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '4915aa00753fef9863d7e47c67b8f7bce6dd8f40' => 
     array (
       0 => '/var/www/templates/studentRegister.tpl',
-      1 => 1379318800,
+      1 => 1382429223,
       2 => 'file',
     ),
   ),
@@ -26,7 +26,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_520f0a3a846a63_77258878')) {function content_520f0a3a846a63_77258878($_smarty_tpl) {?>
-
+<html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <ul>
@@ -98,8 +98,8 @@ $_smarty_tpl->tpl_vars['value']->_loop = true;
       
           
     <input type=submit name='submit' value='提交注册'><br/></form>
-      	 
-      	 
+</html>      	 
+   	 
       	 
       	 
       	 

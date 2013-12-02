@@ -147,8 +147,8 @@ FROM Cexercise,ChooseProblem WHERE Cexercise.Ceno='$str1[$i]' AND Cexercise.Ceno
                $updatearr .= sprintf("ON DUPLICATE KEY UPDATE Cscore=VALUES (Cscore);");
                $updatesql = mysqli_query($link, $updatearr);
        
-	//$endtime = time();
-        }//if
+	     //$endtime = time();
+        }    //if
 			//echo $endtime-$begtime;
 			//echo "</br>";
 

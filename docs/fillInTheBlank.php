@@ -104,13 +104,25 @@ FROM Cexercise,FillProblem WHERE Cexercise.Ceno='$str1[$i]' AND Cexercise.Ceno=F
 	  while ($row = mysqli_fetch_array($selectsql3, MYSQLI_NUM))
            {  
 
-           $str1=$row[0];
+           $str1=$row[0];//right answer
            $score=$row[1];
-           $str2=$row[2];
+           $str2=$row[2];//student answer
            $str3=$row[3];
            $updateid[$temp]=$str3;
            //echo $str3;
-           if(strcmp($str1,$str2))
+	  $tmpscore = 0;
+	  $str1array = explode("%", $str1);
+	  $str2array = explode("%", $str2);
+	  sort($str1array);
+	  sort($str2array);
+
+	  for($i = 1;$i<min(count($str1array),count($str2array));$i++){
+		if($str1array[$i]==$str2array[$i]){
+			$tmpscore++;
+		}	
+	 }
+	$newscore[$temp] = $tmpscore;
+           /*if(strcmp($str1,$str2))
             { 
           	//$updatearray1="UPDATE CexerciseAnswerForstudent  SET Cscore=0 WHERE Ceano=$str3";
                 //$updatesql = mysqli_query($link, $updatearray1);
@@ -121,7 +133,7 @@ FROM Cexercise,FillProblem WHERE Cexercise.Ceno='$str1[$i]' AND Cexercise.Ceno=F
                    //$updatearray1="UPDATE CexerciseAnswerForstudent  SET Cscore=$score WHERE Ceano=$str3";
                    //$updatesql = mysqli_query($link, $updatearray1);
                    $newscore[$temp]=$score;
-               }
+               }*/
             $temp++;
 	 }//while
          //批量更新
@@ -136,18 +148,6 @@ FROM Cexercise,FillProblem WHERE Cexercise.Ceno='$str1[$i]' AND Cexercise.Ceno=F
                $updatesql = mysqli_query($link, $updatearr);
    
     }//if
-          //算分 
-        /* $selectarray1= "SELECT CexerciseAnswerForstudent.Ceno, CexerciseAnswerForstudent.Cscore FROM CexerciseAnswerForstudent where  CexerciseAnswerForstudent.Chno=$hno AND CexerciseAnswerForstudent.Sno=$userid ";
-          $selectsql = mysqli_query($link, $selectarray1);
-          $tscore=0;
- while ($row = mysqli_fetch_array($selectsql,MYSQLI_NUM))
-        {
-            $tscore=$tscore+$row[1];
-        }           
-        //echo $tscore;
-
-      $query = "INSERT INTO ExamAnswerForStudent        ( Ano,Asno,Ahno,Ahscore) VALUES(NULL,'$userid','$hno',           '$tscore') ";
-      $sql = mysqli_query($link, $query);*/
           
       $smarty->display('fillInTheBlank.tpl');
 ?>
