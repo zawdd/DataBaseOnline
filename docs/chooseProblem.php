@@ -131,7 +131,7 @@ FROM Cexercise,ChooseProblem WHERE Cexercise.Ceno='$str1[$i]' AND Cexercise.Ceno
 			{
 			        //$updatearray1="UPDATE CexerciseAnswerForstudent  SET Cscore=$score WHERE Ceano=$str3";
 				//$updatesql = mysqli_query($link, $updatearray1);
-                                $newscore[$temp]=$score*2;
+                                $newscore[$temp]=$score;
 			}
 		   $temp++;	
 		}//while

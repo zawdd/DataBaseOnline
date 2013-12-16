@@ -113,14 +113,21 @@ FROM Cexercise,FillProblem WHERE Cexercise.Ceno='$str1[$i]' AND Cexercise.Ceno=F
 	  $tmpscore = 0;
 	  $str1array = explode("%", $str1);
 	  $str2array = explode("%", $str2);
-	  sort($str1array);
-	  sort($str2array);
+	  $str1FlagArray = array();
+	  for($i = 0;$i < count($str1array); $i++){
+		$str1FlagArray[]=0;
+	  }
 
-	  for($i = 1;$i<min(count($str1array),count($str2array));$i++){
-		if($str1array[$i]==$str2array[$i]){
-			$tmpscore++;
-		}	
-	 }
+	  for($i = 1;$i < count($str1array); $i++){
+		if($str1FlagArray[$i]==0){
+				for($j = 1;$j < count($str2array); $j++){
+				if($str2array[$j]==$str1array[$i]){
+					$tmpscore++;
+					$str1FlagArray[$i]=1;
+				}
+			}
+		}
+	  }
 	$newscore[$temp] = $tmpscore;
            /*if(strcmp($str1,$str2))
             { 
